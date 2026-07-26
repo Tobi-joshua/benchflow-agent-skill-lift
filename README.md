@@ -60,15 +60,13 @@ High-level target layout (not all paths exist yet):
 |------|------|
 | [`AGENTS.md`](./AGENTS.md) | Constitution — principles and operating rules |
 | `README.md` | Project overview (this file) |
+| [`docs/`](./docs/) | Research plan and experiment protocol |
+| [`scripts/`](./scripts/) | Validation, packaging, experiment records, lift metrics |
 | `skills/` | Shipped skill library (submission root) |
-| `skills-candidates/` | Work in progress; not submitted |
-| `skills-ablations/` | Frozen variants for experiments |
-| `docs/` | Research handbooks (deferred until needed) |
-| `eval/` | Paired evaluation configs, runners, reports |
-| `analysis/` | Trajectory and budget analysis |
-| `tests/` | Structural, leakage, and safety hygiene checks |
+| `eval/experiments/` | Pre-registration and result records |
+| `tests/` | Tooling unit tests and fixtures |
 
-The competition artifact is the contents of `skills/`, packaged as specified by the organizers.
+The competition artifact is the contents of `skills/`, packaged via `scripts/package_submission.py`.
 
 ---
 
@@ -113,9 +111,19 @@ Detailed operating rules for agents and contributors: [`AGENTS.md`](./AGENTS.md)
 
 ## Repository Status
 
-**Early foundation.** The constitution and project overview are in place. Skill packs, evaluation tooling, and documentation handbooks are not yet landed.
+**Foundation + evaluation tooling.** Governance docs and the first `scripts/` utilities are in place (validate, package, experiment pre-registration, paired-lift metrics). Candidate skills have not been authored yet.
 
 This repository will grow only through deliberate, reviewable steps — not speculative scaffolding.
+
+### Tooling quick start
+
+```bash
+python3 scripts/validate_skills.py
+python3 scripts/new_experiment.py --slug example --hypothesis '...' --mechanism '...'
+python3 scripts/compute_lift.py path/to/trials.json
+python3 scripts/package_submission.py   # requires skills in skills/
+python3 -m unittest discover -s tests -v
+```
 
 ---
 

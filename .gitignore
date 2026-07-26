@@ -11,6 +11,8 @@ __pycache__/
 build/
 develop-eggs/
 dist/
+submission.zip
+*.submission.zip
 downloads/
 eggs/
 .eggs/
