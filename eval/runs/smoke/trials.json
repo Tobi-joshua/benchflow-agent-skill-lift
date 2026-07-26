@@ -1,11 +1,30 @@
 {
   "experiment_id": "smoke-20260726-safe-task-execution",
   "scored": false,
+  "smoke_decision": "FAIL",
   "library_content_sha256": "72685e220e282607ebad10ba1ff0c6aab591d34cd73a461e752f11aeb6696521",
   "agent": "claude-agent-acp",
   "model": "claude-sonnet-4-6",
   "skillsbench_commit": "9a1f4dd5f7659f75707435da3ce854b6e48321d1",
   "benchflow_version": "0.6.3",
+  "attempts": [
+    {
+      "attempt": 1,
+      "date": "2026-07-26",
+      "classification": "environment_auth",
+      "auth_present": false,
+      "executed": true,
+      "archive_dir": "eval/runs/smoke/archive/attempt-1-auth-fail"
+    },
+    {
+      "attempt": 2,
+      "date": "2026-07-26",
+      "classification": "environment_auth",
+      "auth_present": false,
+      "executed": false,
+      "blocker": "ANTHROPIC_API_KEY (or Claude subscription credentials) not available to the cloud-agent runner; interactive secret entry not possible without chat/repo exposure"
+    }
+  ],
   "trials": [
     {
       "task": "citation-check",
@@ -19,14 +38,15 @@
       "skill_relevant": true,
       "trigger_correct": null,
       "failure_class": "environment_auth",
-      "job_dir": "eval/runs/smoke/jobs/control/citation-check/r1/2026-07-26__19-02-25",
+      "job_dir": "eval/runs/smoke/archive/attempt-1-auth-fail/jobs/control/citation-check/r1/2026-07-26__19-02-25",
       "wall_time_sec": null,
       "input_tokens": 0,
       "output_tokens": 0,
       "tool_steps": 0,
-      "notes": "smoke infra failure: ANTHROPIC_API_KEY required for model 'claude-sonnet-4-6' but not set. Pass it explicitly (for example via --agent-env/agent_env) or define it in .env.; skill_mode=no-skill; skill_source=none; requested_skills_dir=None; effective_skills_dir=None",
+      "notes": "Attempt 1: ANTHROPIC_API_KEY required but not set; skill_mode=no-skill; skill_source=none; requested_skills_dir=null; effective_skills_dir=null. Attempt 2 not executed — auth still absent.",
       "benchflow_error_category": "other",
-      "rewards_raw": null
+      "rewards_raw": null,
+      "smoke_attempt": 1
     },
     {
       "task": "citation-check",
@@ -40,14 +60,15 @@
       "skill_relevant": true,
       "trigger_correct": null,
       "failure_class": "environment_auth",
-      "job_dir": "eval/runs/smoke/jobs/treatment/citation-check/r1/2026-07-26__19-02-41",
+      "job_dir": "eval/runs/smoke/archive/attempt-1-auth-fail/jobs/treatment/citation-check/r1/2026-07-26__19-02-41",
       "wall_time_sec": null,
       "input_tokens": 0,
       "output_tokens": 0,
       "tool_steps": 0,
-      "notes": "smoke infra failure: ANTHROPIC_API_KEY required for model 'claude-sonnet-4-6' but not set. Pass it explicitly (for example via --agent-env/agent_env) or define it in .env.; skill_mode=with-skill; skill_source=custom_runtime; requested_skills_dir=/workspace/skills; effective_skills_dir=/workspace/skills",
+      "notes": "Attempt 1: ANTHROPIC_API_KEY required but not set; skill_mode=with-skill; skill_source=custom_runtime; requested_skills_dir=/workspace/skills; effective_skills_dir=/workspace/skills. Attempt 2 not executed — auth still absent.",
       "benchflow_error_category": "other",
-      "rewards_raw": null
+      "rewards_raw": null,
+      "smoke_attempt": 1
     }
   ]
 }
