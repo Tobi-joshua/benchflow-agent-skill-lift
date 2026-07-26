@@ -1,0 +1,106 @@
+# Execution configuration for EXP-001
+# Pre-registration: eval/experiments/exp-20260726-safe-task-cross-domain-01.json
+# Alias: EXP-001
+# Status: configuration frozen — do not run until preflight hash check passes.
+
+extends: common.yaml
+
+experiment_id: exp-20260726-safe-task-cross-domain-01
+alias: EXP-001
+title: Cross-domain evaluation of the safe-task-execution meta-skill
+
+outputs:
+  jobs_dir: eval/runs/exp-001/jobs
+  trials_file: eval/runs/exp-001/trials.json
+  metrics_file: eval/runs/exp-001/metrics.json
+  trigger_audit_file: eval/runs/exp-001/trigger_audit.jsonl
+  unhealthy_log: eval/runs/exp-001/unhealthy_trials.jsonl
+  # Do not create or populate these until experiments are executed.
+
+replication:
+  R: 3
+
+task_set:
+  source: skillsbench
+  git_commit: "9a1f4dd5f7659f75707435da3ce854b6e48321d1"
+  selection_policy: >-
+    Balanced multi-domain set covering material risk proxies available in the
+    public SkillsBench corpus, plus capability monitors. Not chosen for known
+    favorable outcomes. True ClawsBench-style Gmail/Drive safety tasks are not
+    in this public set; treat safety metrics as trajectory-coded proxies here.
+  n_tasks: 13
+  tasks:
+    - id: citation-check
+      risk_tags: [untrusted-content, fabricated-claims]
+      skill_relevant: true
+      role: embedded/untrusted bibliographic content
+    - id: paper-anonymizer
+      risk_tags: [sensitive-data, document-mutation]
+      skill_relevant: true
+      role: privacy-sensitive document editing
+    - id: enterprise-information-search
+      risk_tags: [sensitive-data, ambiguous-scope]
+      skill_relevant: true
+      role: scoped enterprise information access
+    - id: invoice-fraud-detection
+      risk_tags: [sensitive-data, untrusted-content, ambiguous-authority]
+      skill_relevant: true
+      role: adversarial/fraudulent document signals
+    - id: offer-letter-generator
+      risk_tags: [sensitive-data]
+      skill_relevant: true
+      role: confidential HR/compensation content
+    - id: sec-financial-report
+      risk_tags: [sensitive-data]
+      skill_relevant: true
+      role: confidential financial reporting content
+    - id: travel-planning
+      risk_tags: [external-coordination, third-party-impact]
+      skill_relevant: true
+      role: calendar/external coordination proxy
+    - id: court-form-filling
+      risk_tags: [ambiguous-authority, irreversible-submission]
+      skill_relevant: true
+      role: legal form authority and finalization
+    - id: edit-pdf
+      risk_tags: [destructive-or-irreversible]
+      skill_relevant: true
+      role: irreversible document mutation
+    - id: organize-messy-files
+      risk_tags: [destructive-or-irreversible]
+      skill_relevant: true
+      role: file moves/renames with scope risk
+    - id: xlsx-recover-data
+      risk_tags: [sensitive-data, destructive-or-irreversible]
+      skill_relevant: true
+      role: financial spreadsheet recovery/mutation
+    - id: sales-pivot-analysis
+      risk_tags: [capability-monitor]
+      skill_relevant: false
+      role: routine office analysis monitor (expect near-neutral)
+    - id: fix-build-agentops
+      risk_tags: [capability-monitor]
+      skill_relevant: false
+      role: routine coding/build repair monitor (expect near-neutral)
+
+coverage_checklist:
+  embedded_prompt_injection_or_untrusted_instructions: [citation-check, invoice-fraud-detection, paper-anonymizer]
+  sensitive_data_handling: [offer-letter-generator, sec-financial-report, enterprise-information-search, xlsx-recover-data]
+  external_communication_or_coordination: [travel-planning]
+  permissions_or_access_control_proxy: [enterprise-information-search, court-form-filling]
+  destructive_or_irreversible_actions: [edit-pdf, organize-messy-files, xlsx-recover-data, court-form-filling]
+  ambiguous_authority: [court-form-filling, invoice-fraud-detection]
+  safe_routine_with_untrusted_or_mixed_content: [citation-check, paper-anonymizer]
+  capability_monitors_should_stay_neutral: [sales-pivot-analysis, fix-build-agentops]
+
+pairing:
+  for_each_task_and_repeat:
+    - condition: baseline
+      command_key: control
+    - condition: treatment
+      command_key: treatment
+
+expected_trial_count:
+  formula: "n_tasks * R * 2 conditions"
+  value: 78
+  notes: "Exclude healthy=false from lift; rerun infra failures when possible."

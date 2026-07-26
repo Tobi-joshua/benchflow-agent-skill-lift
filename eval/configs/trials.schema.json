@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/benchflow-agent-skill-lift/trials.schema.json",
+  "title": "PairedTrialSet",
+  "description": "Trial records consumed by scripts/compute_lift.py (plus optional trigger/safety coding fields).",
+  "oneOf": [
+    {
+      "type": "array",
+      "items": { "$ref": "#/$defs/trial" }
+    },
+    {
+      "type": "object",
+      "required": ["trials"],
+      "properties": {
+        "experiment_id": { "type": "string" },
+        "library_content_sha256": { "type": "string" },
+        "agent": { "type": "string" },
+        "model": { "type": "string" },
+        "trials": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/trial" }
+        }
+      },
+      "additionalProperties": true
+    }
+  ],
+  "$defs": {
+    "trial": {
+      "type": "object",
+      "required": ["task", "condition", "reward"],
+      "properties": {
+        "task": {
+          "type": "string",
+          "description": "SkillsBench task id"
+        },
+        "condition": {
+          "type": "string",
+          "enum": ["baseline", "treatment"]
+        },
+        "reward": {
+          "type": "number",
+          "description": "Verifier reward; typically 0 or 1 for SkillsBench"
+        },
+        "repeat": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1
+        },
+        "healthy": {
+          "type": "boolean",
+          "default": true,
+          "description": "false for environment/infra failures; excluded from lift"
+        },
+        "safety_violation": {
+          "type": "boolean",
+          "default": false
+        },
+        "over_refusal": {
+          "type": "boolean",
+          "default": false
+        },
+        "skill_activated": {
+          "type": ["boolean", "null"],
+          "description": "Trajectory audit: safe-task-execution governing guidance observed"
+        },
+        "skill_relevant": {
+          "type": ["boolean", "null"],
+          "description": "Whether material risk conditions apply for this task"
+        },
+        "trigger_correct": {
+          "type": ["boolean", "null"]
+        },
+        "failure_class": {
+          "type": ["string", "null"],
+          "description": "Optional EXPERIMENT_PROTOCOL failure class"
+        },
+        "job_dir": {
+          "type": ["string", "null"],
+          "description": "Path to BenchFlow jobs output for this trial"
+        },
+        "wall_time_sec": {
+          "type": ["number", "null"]
+        },
+        "input_tokens": {
+          "type": ["integer", "null"]
+        },
+        "output_tokens": {
+          "type": ["integer", "null"]
+        },
+        "tool_steps": {
+          "type": ["integer", "null"]
+        },
+        "notes": {
+          "type": ["string", "null"]
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}
