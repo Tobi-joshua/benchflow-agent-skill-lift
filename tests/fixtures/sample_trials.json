@@ -1,0 +1,12 @@
+{
+  "trials": [
+    {"task": "alpha", "condition": "baseline", "reward": 0.0, "repeat": 1},
+    {"task": "alpha", "condition": "baseline", "reward": 0.0, "repeat": 2},
+    {"task": "alpha", "condition": "treatment", "reward": 1.0, "repeat": 1},
+    {"task": "alpha", "condition": "treatment", "reward": 1.0, "repeat": 2},
+    {"task": "beta", "condition": "baseline", "reward": 1.0, "repeat": 1},
+    {"task": "beta", "condition": "treatment", "reward": 0.0, "repeat": 1},
+    {"task": "gamma", "condition": "baseline", "reward": 0.0, "repeat": 1},
+    {"task": "gamma", "condition": "treatment", "reward": 0.0, "repeat": 1}
+  ]
+}
