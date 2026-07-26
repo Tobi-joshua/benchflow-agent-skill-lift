@@ -2,47 +2,68 @@
 
 **Final decision: FAIL**
 
-**Execution date:** 2026-07-26  
-**Repo git commit:** `3ac2aa79e91262e5858e06e5fa32647a56fde8ee` (branch `cursor/safe-task-execution-skill-a21e`; includes these smoke artifacts)  
-**Library hash:** `72685e220e282607ebad10ba1ff0c6aab591d34cd73a461e752f11aeb6696521` (matches lock)  
+**Exact remaining blocker:** Anthropic authentication is not available to this cloud-agent runner. No `ANTHROPIC_API_KEY` (or Claude subscription credentials file) is present in the process environment, and this session cannot interactively `read` a secret without exposing it into chat or committed files.
+
+**Branch:** `cursor/safe-task-execution-skill-a21e`  
+**Library hash:** `72685e220e282607ebad10ba1ff0c6aab591d34cd73a461e752f11aeb6696521` (unchanged)  
 **SkillsBench commit:** `9a1f4dd5f7659f75707435da3ce854b6e48321d1`  
-**Python version:** 3.12.3 (via SkillsBench `uv sync --locked`)  
-**BenchFlow version:** 0.6.3 (locked; confirmed with `importlib.metadata.version`)  
-**Agent / model:** `claude-agent-acp` / `claude-sonnet-4-6`  
-**Selected task:** `citation-check` (from frozen EXP-001 set)  
-**Scored experiment impact:** none — outputs only under `eval/runs/smoke/`; EXP-001/EXP-002 results untouched
+**Python / BenchFlow:** 3.12.3 / 0.6.3 (`uv sync --locked`)  
+**Agent / model:** `claude-agent-acp` / `claude-sonnet-4-6` (unchanged)  
+**Selected task:** `citation-check` (unchanged)  
+**Scored experiment impact:** none — outputs only under `eval/runs/smoke/`; EXP-001/EXP-002 untouched
 
 ---
 
-## Purpose
+## Attempt 1 — infrastructure/authentication failure (2026-07-26)
 
-Runtime and data-pipeline validation only. Not a scored EXP-001/EXP-002 trial.
+Preserved under `eval/runs/smoke/archive/attempt-1-auth-fail/`.
+
+| Item | Result |
+|---|---|
+| Classification | Infrastructure / authentication failure (not a skill failure) |
+| Control launch | Started; errored before sandbox |
+| Treatment launch | Started; errored before sandbox |
+| Error (both) | `ANTHROPIC_API_KEY required for model 'claude-sonnet-4-6' but not set` |
+| Sandbox start | No (`environment_setup_time_sec = 0`) |
+| Verifier | Not executed (`rewards = null`) |
+| Harness skill policy | Control `skill_mode=no-skill` / `skill_source=none`; treatment `with-skill` / `custom_runtime` / `effective_skills_dir=/workspace/skills` |
+| Trial JSON | Written with `healthy=false` (schema-valid) |
+
+Frozen skill, hash, pre-regs, and scored paths were not modified.
 
 ---
 
-## Preflight checks
+## Attempt 2 — authenticated rerun (2026-07-26)
+
+**Status: NOT EXECUTED — authentication still unavailable**
+
+### Preflight before intended rerun
 
 | Check | Result |
 |---|---|
 | Branch `cursor/safe-task-execution-skill-a21e` | PASS |
-| Library hash matches locked value | PASS |
-| SkillsBench at `9a1f4dd…` | PASS |
-| `uv sync --locked` (SkillsBench; `uv.lock` not refreshed) | PASS |
-| Python 3.12 in locked env | PASS |
-| BenchFlow 0.6.3 in locked env | PASS |
-| `claude-agent-acp` registered (`uv run bench agent show`) | PASS |
-| `claude-sonnet-4-6` accepted by harness for that agent | PASS (static + run accepted model id; failed later on missing API key) |
-| Docker available | PASS (installed + `dockerd` started in this environment; client/server 29.1.3) |
-| Authentication available | **FAIL** — `ANTHROPIC_API_KEY` unset; no `~/.claude/.credentials.json` |
+| Library hash matches lock | PASS |
+| SkillsBench `9a1f4dd…` | PASS |
+| Python 3.12 | PASS |
+| BenchFlow 0.6.3 | PASS |
+| Docker available | PASS |
+| `claude-agent-acp` registered | PASS |
+| Auth present (`ANTHROPIC_API_KEY` or `~/.claude/.credentials.json`) | **FAIL** |
+| Auth accepted by harness | **NOT TESTED** (credential absent) |
 
----
+### Auth discovery (presence only; no values inspected or printed)
 
-## Exact commands
+- Process env: `ANTHROPIC_API_KEY` absent
+- Alternate env names checked: absent
+- Claude credentials file: absent
+- `/run/secrets` / Cursor secret mounts: none
+- Any process environ containing `ANTHROPIC_API_KEY`: none
+- Cloud environment record for this run: `null` (no saved environment with injected secrets)
+- Interactive `read -s` / PowerShell secure prompt: not usable in this non-interactive cloud agent without pasting into chat (forbidden)
 
-SkillsBench root used for this smoke: `/tmp/skillsbench-audit`  
-Repo root: `/workspace`
+### Commands that would be rerun unchanged
 
-### Control (no-skill)
+Control:
 
 ```bash
 cd /tmp/skillsbench-audit
@@ -55,7 +76,7 @@ uv run bench eval run \
   --jobs-dir "/workspace/eval/runs/smoke/jobs/control/citation-check/r1"
 ```
 
-### Treatment (repo skills only)
+Treatment:
 
 ```bash
 cd /tmp/skillsbench-audit
@@ -69,120 +90,63 @@ uv run bench eval run \
   --jobs-dir "/workspace/eval/runs/smoke/jobs/treatment/citation-check/r1"
 ```
 
----
+Attempt 2 intentionally **did not** re-invoke these commands without credentials, to avoid another identical pre-sandbox auth error and to avoid any risk of writing secret material into logs.
 
-## Launch status
+### Attempt 2 verification checklist
 
-| Condition | Launch | Exit | Job dir |
-|---|---|---|---|
-| Control | Started; errored before sandbox/agent | 1 | `eval/runs/smoke/jobs/control/citation-check/r1/2026-07-26__19-02-25` |
-| Treatment | Started; errored before sandbox/agent | 1 | `eval/runs/smoke/jobs/treatment/citation-check/r1/2026-07-26__19-02-41` |
-
-Shared blocker from both `result.json` files:
-
-> `ANTHROPIC_API_KEY required for model 'claude-sonnet-4-6' but not set.`
-
-Environment setup time was `0.0s` in both summaries — Docker task images were not built/started for these attempts.
-
----
-
-## Skill absence / presence evidence
-
-Auth failed before container start, so **in-container skill discovery was not exercised**.  
-Harness-level skill policy fields were still recorded and are useful partial evidence:
-
-| Field | Control | Treatment |
+| # | Check | Status |
 |---|---|---|
-| `skill_mode` | `no-skill` | `with-skill` |
-| `skill_source` | `none` | `custom_runtime` |
-| `requested_skills_dir` | `null` | `/workspace/skills` |
-| `effective_skills_dir` | `null` | `/workspace/skills` |
-| `skills_sandbox_dir` | `null` | `/skills` |
-| `include_task_skills` | `false` | `false` |
-
-**Control:** custom skill not requested / source `none` — PASS for harness-level absence.  
-**Treatment:** mounts repo `skills/` as custom runtime (`safe-task-execution` lives there) — PASS for harness-level mount intent.  
-**In-sandbox discoverability / trajectory activation:** NOT VERIFIED (auth blocker).
-
----
-
-## Verifier status
-
-**Not run.** Both jobs errored before agent execution; `rewards` is `null`; `verifier_errored` remains 0 in summaries because the verifier never executed.
+| 1 | Authentication accepted | FAIL — not present |
+| 2 | Both jobs launch | NOT RUN |
+| 3 | Both sandboxes start | NOT RUN |
+| 4 | Agent connects | NOT RUN |
+| 5 | Control has no custom skill | NOT RUN (Attempt 1 harness fields only) |
+| 6 | Treatment mounts `safe-task-execution` | NOT RUN (Attempt 1 harness fields only) |
+| 7 | Verifier executes | NOT RUN |
+| 8 | Reward extractable | NOT RUN |
+| 9 | Trial JSON schema-valid | Attempt 1 PASS with `healthy=false`; Attempt 2 no new healthy trials |
+| 10 | Failure classes distinguishable | PASS (Attempt 1 classified `environment_auth`) |
+| 11 | No credentials in repo/git diff | PASS |
 
 ---
 
-## Trial JSON compatibility
+## How to supply auth for the next rerun (outside this chat)
 
-Wrote `eval/runs/smoke/trials.json` from the smoke job metadata:
+Do **not** paste the key into Cursor chat, YAML, Markdown, JSON, or a committed `.env`.
 
-- Conditions: `baseline` / `treatment`
-- `healthy: false` for both (auth/infra failure, not task failure)
-- `reward: 0.0` placeholder with `rewards_raw: null` noted
-- Validates against `eval/configs/trials.schema.json` (structural required fields; `jsonschema` check also run via SkillsBench env)
+Preferred for Cursor Cloud: add `ANTHROPIC_API_KEY` as a **Cloud Agent / environment secret** for a saved environment attached to this repo, then restart the agent so the key is injected only into the process environment.
 
-`scripts/compute_lift.py` correctly refuses to score when no healthy paired trials exist — confirms environment failures are distinguishable from task/skill outcomes.
+Local / SSH runner alternative:
 
-**Not** written into EXP-001/EXP-002 paths. Metrics for those experiments were not calculated.
+```bash
+read -s ANTHROPIC_API_KEY
+export ANTHROPIC_API_KEY
+# then the two uv run bench commands above
+unset ANTHROPIC_API_KEY
+```
 
----
-
-## Environment vs task/skill failure distinguishability
-
-| Signal | Observed |
-|---|---|
-| `error` text | missing `ANTHROPIC_API_KEY` |
-| `rewards` | `null` |
-| `healthy` in smoke trials | `false` |
-| `failure_class` | `environment_auth` |
-| Verifier outcome | absent (not a task fail) |
-
-This matches the frozen protocol rule: infra/auth failures must not enter paired lift denominators.
+After auth is present, re-run Step 15 unchanged (same task/agent/model/commands/output roots).
 
 ---
 
-## Secrets / credentials
+## Artifacts layout
 
-- No API key values were available in the environment.
-- Smoke artifacts were scanned for token-like patterns before commit.
-- Logs under `eval/runs/smoke/logs/` are local aids; `*.log` is gitignored.
-- This report intentionally records only variable **names**, never secret values.
+```
+eval/runs/smoke/
+  SMOKE_REPORT.md          # this report
+  trials.json              # latest smoke trials (still unhealthy / blocked)
+  archive/attempt-1-auth-fail/
+    jobs/...               # preserved Attempt 1 outputs
+    trials.json
+  jobs/...                 # current tree (Attempt 1 copies until a successful rerun supersedes)
+```
 
----
-
-## Acceptance gate checklist
-
-| Gate | Status |
-|---|---|
-| Exact locked versions installed | PASS (`BenchFlow 0.6.3`, Python 3.12) |
-| Library hash still matches | PASS |
-| Control and treatment both execute end-to-end | **FAIL** (auth) |
-| Treatment skill mounted; control has no skill exposure | PARTIAL (harness fields only; no sandbox proof) |
-| Verifier result extractable | **FAIL** (verifier not reached) |
-| Trial JSON validates against schema | PASS (with `healthy=false`) |
-| Smoke outputs isolated from scored outputs | PASS |
-| No secrets committed | PASS |
-
----
-
-## Warnings / blockers
-
-1. **Blocker (fatal for this smoke):** Anthropic authentication is not configured in this cloud-agent environment (`ANTHROPIC_API_KEY` missing; no Claude subscription credentials file).
-2. Docker was not preinstalled; it was installed and `dockerd` started successfully for this session. Future scored hosts must provide Docker (or an approved alternate sandbox recorded before first scored run — not done here; freeze remains `docker`).
-3. Because auth failed before sandbox start, skill filesystem mount and trajectory discovery remain unproven.
-4. Frozen YAML was **not** changed. Open-range installs were **not** used.
+No outputs under `eval/runs/exp-001/` or `eval/runs/exp-002/`.
 
 ---
 
 ## Final decision
 
-**FAIL** — unscored smoke pair did not clear the acceptance gate.
+**FAIL** — authenticated smoke pair could not be executed because the runner still has no Anthropic credential.
 
 **Scored EXP-001 / EXP-002 remain NO-GO.**
-
-### Required before re-running smoke
-
-1. Provide Anthropic auth to the runner (`ANTHROPIC_API_KEY` or `claude login` → `~/.claude/.credentials.json`) without committing secrets.
-2. Re-run the same two commands under `eval/runs/smoke/` only.
-3. Confirm in-container skill absence/presence, verifier artifacts, and healthy trial JSON extraction.
-4. Only after a PASS smoke report: proceed to scored experiments.
