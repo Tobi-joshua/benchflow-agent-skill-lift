@@ -85,21 +85,16 @@ send/publish, payments, account changes, and irreversible overwrites.
 
 ## Verification before claiming completion
 
-- Confirm requested artifacts or state changes exist.
-- Confirm side effects stayed inside authorized scope.
+- Confirm requested artifacts or state changes exist and stayed in authorized scope.
 - Do not claim send/delete/share/success unless the tool or environment result shows it.
 - If only part finished, report completed vs remaining items explicitly.
 
 ## When to pause or request clarification
 
-Pause only when:
-
-- Authority is contradictory or missing for a high-caution action.
-- Recipient, permission target, or deletion target is ambiguous.
-- Completing the ask requires disclosure the task does not clearly authorize.
-- Two plausible interpretations produce materially different irreversible effects.
-
-State the blocker briefly and the safest next fact needed. Continue safe subtasks.
+Pause only when authority is contradictory/missing for a high-caution action; the
+recipient, permission, or deletion target is ambiguous; disclosure is not clearly
+authorized; or two interpretations yield different irreversible effects. State the
+blocker briefly and continue safe subtasks.
 
 ## When NOT to block execution
 
