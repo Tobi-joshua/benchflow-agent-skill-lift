@@ -95,11 +95,11 @@ The competition artifact is the contents of `skills/`, packaged via `scripts/pac
 |-------|--------|
 | **0 — Foundations** | Constitution (`AGENTS.md`), overview (`README.md`), research norms |
 | **1 — Scaffolding** | Repository layout, packaging, skill hygiene tests |
-| **2 — Core library** | Safety/scope and execution-discipline skills |
-| **3 — Transfer packs** | High-reuse format and portable procedural skills |
+| **2 — Core library** | First candidate: `safe-task-execution` (in progress on feature branch) |
+| **3 — Transfer packs** | Deferred until EXP-001/002 decide keep/revise |
 | **4 — Measured domain thins** | Domain skills only where ablations show stable lift |
-| **5 — Public evaluation** | Paired runs on SkillsBench; regression and safety review |
-| **6 — Submission** | Frozen `skills/` zip, writeup, private-set readiness |
+| **5 — Public evaluation** | Smoke PASS; scored EXP-001/002 queued |
+| **6 — Submission** | Card, architecture, storyboard, description drafted; zip after evidence |
 | **7 — Post-contest** | Publish ablations and reusable methodology |
 
 Phases may overlap; promotion always requires evidence.
