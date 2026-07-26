@@ -16,8 +16,11 @@ submission.zip
 downloads/
 eggs/
 .eggs/
-lib/
+/lib/
 lib64/
+# Keep repository tooling package (not a distutils lib/)
+!scripts/lib/
+!scripts/lib/**
 parts/
 sdist/
 var/
