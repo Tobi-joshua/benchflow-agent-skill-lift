@@ -1,75 +1,36 @@
 {
-  "task_name": "citation-check",
-  "rollout_name": "citation-check__85ecb762",
-  "rewards": null,
+  "task_path": "tasks/citation-check",
   "agent": "claude-agent-acp",
-  "agent_name": "",
   "model": "claude-sonnet-4-6",
-  "skill_mode": "with-skill",
-  "skill_source": "custom_runtime",
-  "requested_skills_dir": "/workspace/skills",
-  "effective_skills_dir": "/workspace/skills",
-  "skills_sandbox_dir": "/skills",
+  "reasoning_effort": null,
+  "environment": "docker",
+  "environment_manifest": null,
+  "skill_mode": "no-skill",
+  "skill_source": "none",
+  "requested_skills_dir": null,
+  "effective_skills_dir": null,
+  "skills_sandbox_dir": null,
   "include_task_skills": false,
-  "n_tool_calls": 0,
-  "n_skill_invocations": 0,
-  "n_prompts": 0,
-  "agent_result": {
-    "n_tool_calls": 0,
-    "n_skill_invocations": 0,
-    "n_prompts": 0,
-    "n_input_tokens": 0,
-    "n_output_tokens": 0,
-    "n_cache_read_tokens": 0,
-    "n_cache_creation_tokens": 0,
-    "total_tokens": 0,
-    "cost_usd": null,
-    "usage_source": "unavailable",
-    "price_source": null
-  },
-  "final_metrics": {
-    "total_prompt_tokens": 0,
-    "total_completion_tokens": 0,
-    "total_cached_tokens": 0,
-    "total_cost_usd": null
-  },
-  "trajectory_summary": {
-    "steps": 0,
-    "tool_call_steps": 0,
-    "user_message_steps": 0,
-    "agent_message_steps": 0,
-    "agent_thought_steps": 0,
-    "other_steps": 0,
-    "event_type_counts": {},
-    "tool_call_status_counts": {},
-    "partial_trajectory": false,
-    "trajectory_source": null
-  },
-  "usage_tracking": {
-    "requested": "auto",
-    "status": "unavailable",
-    "environment": "docker",
-    "endpoint_kind": "host",
-    "usage_source": "unavailable"
-  },
-  "error": "ANTHROPIC_API_KEY required for model 'claude-sonnet-4-6' but not set. Pass it explicitly (for example via --agent-env/agent_env) or define it in .env.",
-  "error_category": "other",
-  "verifier_error": null,
-  "verifier_error_category": null,
-  "export_error": null,
-  "idle_timeout_info": null,
-  "agent_timeout_info": null,
-  "sandbox_startup_info": null,
-  "transport_error_info": null,
-  "verifier_timeout_info": null,
-  "api_error_info": null,
-  "suspected_api_error_info": null,
-  "partial_trajectory": false,
-  "trajectory_source": null,
-  "started_at": "2026-07-26 19:02:41.383220",
-  "finished_at": "2026-07-26 19:02:41.383892",
-  "timing": {
-    "total": 0.0
+  "sandbox_user": "agent",
+  "sandbox_locked_paths": [
+    "/oracle",
+    "/solution",
+    "/verifier",
+    "/tests",
+    "/testbed_verify"
+  ],
+  "sandbox_setup_timeout": 120,
+  "skip_install": false,
+  "agent_install_timeout": 900,
+  "context_root": null,
+  "timeout_sec": 900,
+  "concurrency": 4,
+  "agent_idle_timeout_sec": 600,
+  "started_at": "2026-07-26 21:13:40.173866",
+  "agent_env": {
+    "BENCHFLOW_PROVIDER_MODEL": "claude-sonnet-4-6",
+    "ANTHROPIC_MODEL": "claude-sonnet-4-6",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
   },
   "scenes": [
     {
@@ -98,6 +59,9 @@
   ],
   "loop": {
     "strategy": "single-shot"
+  },
+  "usage_tracking": {
+    "requested": "auto"
   },
   "source": {
     "type": "github",
@@ -131,6 +95,5 @@
       "verifier/test_outputs.py": "sha256:f2134453d38c3493403ccba5f1c29db0322ea1eeea820aa769a9f63123ea16ae"
     }
   },
-  "task_digest": "sha256:46f853b5cb21b78f027d86667d8d098ef696a7ad6654df88d5a40d7b01323f7b",
-  "sandbox_id": null
+  "task_digest": "sha256:46f853b5cb21b78f027d86667d8d098ef696a7ad6654df88d5a40d7b01323f7b"
 }

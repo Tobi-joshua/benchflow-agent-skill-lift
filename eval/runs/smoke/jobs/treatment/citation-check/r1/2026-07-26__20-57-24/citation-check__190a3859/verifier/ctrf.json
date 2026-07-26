@@ -1,0 +1,101 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 9,
+            "passed": 9,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1785098495.246456,
+            "stop": 1785098495.3092463
+        },
+        "tests": [
+            {
+                "name": "::TestAnswerFileExists::test_answer_file_exists",
+                "status": "passed",
+                "duration": 0.0014936910010874271,
+                "start": 1785098495.2899442,
+                "stop": 1785098495.2920294,
+                "retries": 0,
+                "file_path": "../verifier/test_outputs.py"
+            },
+            {
+                "name": "::TestAnswerFileExists::test_answer_file_valid_json",
+                "status": "passed",
+                "duration": 0.0013722830008191522,
+                "start": 1785098495.2924554,
+                "stop": 1785098495.2941937,
+                "retries": 0,
+                "file_path": "../verifier/test_outputs.py"
+            },
+            {
+                "name": "::TestAnswerFileExists::test_answer_has_required_key",
+                "status": "passed",
+                "duration": 0.0014893930001562694,
+                "start": 1785098495.2945817,
+                "stop": 1785098495.2967207,
+                "retries": 0,
+                "file_path": "../verifier/test_outputs.py"
+            },
+            {
+                "name": "::TestAnswerFileExists::test_fake_citations_is_list",
+                "status": "passed",
+                "duration": 0.001387822000651795,
+                "start": 1785098495.297299,
+                "stop": 1785098495.2990596,
+                "retries": 0,
+                "file_path": "../verifier/test_outputs.py"
+            },
+            {
+                "name": "::TestFakeCitationsDetected::test_smith2020ai_detected",
+                "status": "passed",
+                "duration": 0.0012399760007610894,
+                "start": 1785098495.2994502,
+                "stop": 1785098495.301103,
+                "retries": 0,
+                "file_path": "../verifier/test_outputs.py"
+            },
+            {
+                "name": "::TestFakeCitationsDetected::test_wilson2021neural_detected",
+                "status": "passed",
+                "duration": 0.0012155410013292567,
+                "start": 1785098495.30148,
+                "stop": 1785098495.3030632,
+                "retries": 0,
+                "file_path": "../verifier/test_outputs.py"
+            },
+            {
+                "name": "::TestFakeCitationsDetected::test_patel2023blockchain_detected",
+                "status": "passed",
+                "duration": 0.0012339219993009465,
+                "start": 1785098495.3034387,
+                "stop": 1785098495.3050535,
+                "retries": 0,
+                "file_path": "../verifier/test_outputs.py"
+            },
+            {
+                "name": "::TestCitationCount::test_correct_fake_count",
+                "status": "passed",
+                "duration": 0.0012113719994886196,
+                "start": 1785098495.3054385,
+                "stop": 1785098495.306985,
+                "retries": 0,
+                "file_path": "../verifier/test_outputs.py"
+            },
+            {
+                "name": "::TestCitationCount::test_no_empty_titles",
+                "status": "passed",
+                "duration": 0.0012640300001294236,
+                "start": 1785098495.307362,
+                "stop": 1785098495.3089917,
+                "retries": 0,
+                "file_path": "../verifier/test_outputs.py"
+            }
+        ]
+    }
+}
