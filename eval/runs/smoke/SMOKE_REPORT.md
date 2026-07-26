@@ -3,7 +3,7 @@
 **Final decision: FAIL**
 
 **Execution date:** 2026-07-26  
-**Repo git commit:** `c583517eb809f688abe48593e62ddbf6abe139d7` (branch `cursor/safe-task-execution-skill-a21e`)  
+**Repo git commit:** `3ac2aa79e91262e5858e06e5fa32647a56fde8ee` (branch `cursor/safe-task-execution-skill-a21e`; includes these smoke artifacts)  
 **Library hash:** `72685e220e282607ebad10ba1ff0c6aab591d34cd73a461e752f11aeb6696521` (matches lock)  
 **SkillsBench commit:** `9a1f4dd5f7659f75707435da3ce854b6e48321d1`  
 **Python version:** 3.12.3 (via SkillsBench `uv sync --locked`)  
