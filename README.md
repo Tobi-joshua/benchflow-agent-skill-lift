@@ -54,17 +54,26 @@ Aligned with [`AGENTS.md`](./AGENTS.md):
 
 ## Repository Structure
 
-High-level target layout (not all paths exist yet):
-
 | Path | Role |
 |------|------|
 | [`AGENTS.md`](./AGENTS.md) | Constitution — principles and operating rules |
 | `README.md` | Project overview (this file) |
-| [`docs/`](./docs/) | Research plan and experiment protocol |
-| [`scripts/`](./scripts/) | Validation, packaging, experiment records, lift metrics |
-| `skills/` | Shipped skill library (submission root) |
-| `eval/experiments/` | Pre-registration and result records |
+| [`docs/`](./docs/) | Research plan, protocol, architecture, submission materials |
+| [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) | Measurement architecture (diagrams) |
+| [`scripts/`](./scripts/) | Validate, hash, package, pre-register, paired-lift metrics |
+| [`skills/`](./skills/) | Shipped skill library (submission root) |
+| [`eval/configs/`](./eval/configs/) | Frozen execution pins for EXP-001/002 |
+| [`eval/experiments/`](./eval/experiments/) | Pre-registration records |
+| [`eval/runs/smoke/`](./eval/runs/smoke/) | Unscored pipeline smoke (isolated from scored EXP) |
 | `tests/` | Tooling unit tests and fixtures |
+
+Architecture overview:
+
+![Repository architecture](./docs/assets/architecture.svg)
+
+Kaggle card (560×280):
+
+![Kaggle project card](./docs/assets/kaggle-card-560x280.png)
 
 The competition artifact is the contents of `skills/`, packaged via `scripts/package_submission.py`.
 
@@ -86,11 +95,11 @@ The competition artifact is the contents of `skills/`, packaged via `scripts/pac
 |-------|--------|
 | **0 — Foundations** | Constitution (`AGENTS.md`), overview (`README.md`), research norms |
 | **1 — Scaffolding** | Repository layout, packaging, skill hygiene tests |
-| **2 — Core library** | Safety/scope and execution-discipline skills |
-| **3 — Transfer packs** | High-reuse format and portable procedural skills |
+| **2 — Core library** | First candidate: `safe-task-execution` (in progress on feature branch) |
+| **3 — Transfer packs** | Deferred until EXP-001/002 decide keep/revise |
 | **4 — Measured domain thins** | Domain skills only where ablations show stable lift |
-| **5 — Public evaluation** | Paired runs on SkillsBench; regression and safety review |
-| **6 — Submission** | Frozen `skills/` zip, writeup, private-set readiness |
+| **5 — Public evaluation** | Smoke PASS; scored EXP-001/002 queued |
+| **6 — Submission** | Card, architecture, storyboard, description drafted; zip after evidence |
 | **7 — Post-contest** | Publish ablations and reusable methodology |
 
 Phases may overlap; promotion always requires evidence.
@@ -111,19 +120,46 @@ Detailed operating rules for agents and contributors: [`AGENTS.md`](./AGENTS.md)
 
 ## Repository Status
 
-**Foundation + evaluation tooling.** Governance docs and the first `scripts/` utilities are in place (validate, package, experiment pre-registration, paired-lift metrics). Candidate skills have not been authored yet.
+**Candidate branch:** `cursor/safe-task-execution-skill-a21e` (not merged to `main` until EXP keep/revise/reject).
 
-This repository will grow only through deliberate, reviewable steps — not speculative scaffolding.
+| Milestone | Status |
+|-----------|--------|
+| Governance + eval tooling | Done |
+| Candidate skill `safe-task-execution` | Authored; library hash locked |
+| EXP-001 / EXP-002 pre-registration + freeze configs | Done |
+| Runtime audit (BenchFlow 0.6.3 lock) | Done |
+| Unscored smoke (`citation-check` control+treatment) | **PASS** |
+| Scored EXP-001 / EXP-002 | **Not started** (intentional pause) |
+
+Locked library hash:
+
+`72685e220e282607ebad10ba1ff0c6aab591d34cd73a461e752f11aeb6696521`
+
+Smoke proves the Docker → agent → verifier → trials path. It is **not** a scored lift claim. See [`eval/runs/smoke/SMOKE_REPORT.md`](./eval/runs/smoke/SMOKE_REPORT.md).
+
+Submission prep (pre-score): [`docs/submission/KAGGLE_DESCRIPTION.md`](./docs/submission/KAGGLE_DESCRIPTION.md), [`docs/DEMO_STORYBOARD.md`](./docs/DEMO_STORYBOARD.md), [`docs/submission/SKILL_DOC_REVIEW.md`](./docs/submission/SKILL_DOC_REVIEW.md).
 
 ### Tooling quick start
 
 ```bash
-python3 scripts/validate_skills.py
-python3 scripts/new_experiment.py --slug example --hypothesis '...' --mechanism '...'
+python3 scripts/validate_skills.py --skills-dir skills
+python3 scripts/hash_library.py --skills-dir skills
 python3 scripts/compute_lift.py path/to/trials.json
-python3 scripts/package_submission.py   # requires skills in skills/
+python3 scripts/package_submission.py --skills-dir skills
 python3 -m unittest discover -s tests -v
 ```
+
+### Locked eval runtime (for smoke / scored runs)
+
+```bash
+# separate SkillsBench checkout at the pinned commit
+git checkout 9a1f4dd5f7659f75707435da3ce854b6e48321d1
+uv sync --locked
+uv run bench --version   # expect 0.6.3
+# then: uv run bench eval run ... (see eval/configs/common.yaml)
+```
+
+Do not `uv lock --upgrade-package benchflow`.
 
 ---
 
@@ -134,7 +170,9 @@ We welcome contributions that improve **measured safe lift** or the research app
 - Propose or refine portable skills with clear triggers and applicability bounds.
 - Run and report paired ablations (including negative results).
 - Improve leakage, budget, and safety hygiene checks.
-- Strengthen docs once handbook files exist — without contradicting [`AGENTS.md`](./AGENTS.md).
+- Strengthen writeup materials without contradicting [`AGENTS.md`](./AGENTS.md).
+
+**While EXP-001/002 are frozen:** do not edit `skills/safe-task-execution/SKILL.md` or pre-registration JSON — that invalidates the locked hash.
 
 Before contributing code or skills, read [`AGENTS.md`](./AGENTS.md). Prefer small PRs with a hypothesis and an evaluation story.
 

@@ -1,0 +1,123 @@
+# Shared execution pins for EXP-001 and EXP-002.
+# Do not edit skills/ or pre-registration JSON when changing run logistics.
+# Treatment identity: skills/ library content SHA-256 must match pre-registration.
+
+schema_version: "1"
+project: benchflow-agent-skill-lift
+candidate_branch: cursor/safe-task-execution-skill-a21e
+locked_treatment_library_sha256: "72685e220e282607ebad10ba1ff0c6aab591d34cd73a461e752f11aeb6696521"
+
+# --- Pins (held constant across baseline and treatment) ---
+agent: claude-agent-acp
+model: claude-sonnet-4-6
+# Verify availability with: bench agent show claude-agent-acp
+# If the provider rejects this ID, stop and re-pin before any scored run.
+
+benchflow:
+  # SkillsBench CONTRIBUTING targets benchflow>=0.6.2,<0.7 for native task.md.
+  package_constraint: "benchflow>=0.6.2,<0.7"
+
+skillsbench:
+  repo: https://github.com/benchflow-ai/skillsbench.git
+  # Pinned revision used when selecting task IDs below (shallow clone at prep time).
+  git_commit: "9a1f4dd5f7659f75707435da3ce854b6e48321d1"
+  tasks_root: "tasks"   # relative to local SkillsBench checkout
+
+environment:
+  sandbox: docker
+  network_mode: follow-task   # do not override task.md network unless required
+  notes: "Prefer Docker for local reproducibility. Daytona/Modal allowed only if identical pins are recorded before first run."
+
+limits:
+  # Prefer task.md timeouts when present; these are outer caps for the job.
+  agent_timeout_sec: 900
+  verifier_timeout_sec: 900
+  build_timeout_sec: 600
+  max_input_tokens: null      # unset = harness/provider default; do not raise mid-experiment
+  max_output_tokens: null
+
+sampling:
+  # Where the harness/provider supports explicit seeds, set and record them.
+  seed: 42
+  temperature: null           # leave null to use harness default; do not change between conditions
+
+replication:
+  R: 3
+  claim_level: promotion-supporting
+
+paths:
+  repo_root: "."              # repository root containing skills/
+  skills_dir: "skills"        # treatment library (safe-task-execution only)
+  experiments_dir: "eval/experiments"
+  configs_dir: "eval/configs"
+  runs_dir: "eval/runs"
+  trials_schema: "eval/configs/trials.schema.json"
+
+integrity:
+  preflight:
+    - "python3 scripts/validate_skills.py --skills-dir skills"
+    - "python3 scripts/hash_library.py --skills-dir skills"
+  hash_must_equal: "72685e220e282607ebad10ba1ff0c6aab591d34cd73a461e752f11aeb6696521"
+  on_hash_mismatch: "STOP. Re-register EXP-001 and EXP-002 before any run."
+
+skill_modes:
+  control:
+    skill_mode: no-skill
+    skills_dir: null
+  treatment:
+    skill_mode: with-skill
+    skills_dir: skills   # repo skills/ only — not task-bundled environment/skills
+
+# Exact command templates (expand TASK_ID, SKILLSBENCH_ROOT, REPO_ROOT, REPEAT, JOBS_DIR).
+commands:
+  control: >-
+    bench eval run
+    --tasks-dir "${SKILLSBENCH_ROOT}/tasks/${TASK_ID}"
+    --agent claude-agent-acp
+    --model claude-sonnet-4-6
+    --skill-mode no-skill
+    --sandbox docker
+    --jobs-dir "${JOBS_DIR}/control/${TASK_ID}/r${REPEAT}"
+  treatment: >-
+    bench eval run
+    --tasks-dir "${SKILLSBENCH_ROOT}/tasks/${TASK_ID}"
+    --agent claude-agent-acp
+    --model claude-sonnet-4-6
+    --skill-mode with-skill
+    --skills-dir "${REPO_ROOT}/skills"
+    --sandbox docker
+    --jobs-dir "${JOBS_DIR}/treatment/${TASK_ID}/r${REPEAT}"
+
+trigger_observation:
+  method: trajectory-audit
+  relevant_skill_name: safe-task-execution
+  positive_evidence:
+    - "Agent opens or reads SKILL.md for safe-task-execution under the mounted skills tree"
+    - "Agent explicitly cites safe-task-execution procedures while deciding an action"
+  negative_or_absent:
+    - "Skill never appears in tool reads / catalog selection / cited guidance"
+  coding_fields_in_trials:
+    skill_activated: "bool — whether positive evidence was found"
+    skill_relevant: "bool — whether the task had material risk conditions (EXP-001 annotation)"
+    trigger_correct: "bool|null — activated==relevant when both coded; null if uncertain"
+  notes: >-
+    Harnesses differ in progressive disclosure. If activation cannot be observed
+    reliably for a trial, set skill_activated null and exclude that trial from
+    trigger-precision denominators (still keep reward metrics).
+
+environment_vs_skill_failures:
+  healthy_true: "Agent finished with pass/fail/timeout attributable to task solving"
+  healthy_false_examples:
+    - sandbox/image build failure
+    - auth/quota/provider outage
+    - OOM / disk / network infra errors
+    - BenchFlow harness crash before verifier
+  rule: >-
+    Mark infra failures healthy=false and exclude them from paired lift
+    (scripts/compute_lift.py already ignores healthy=false). Rerun when possible.
+    Do not code infra failures as skill regressions or safety violations.
+
+trials_export:
+  schema: eval/configs/trials.schema.json
+  aggregator: "python3 scripts/compute_lift.py eval/runs/<exp>/trials.json --output eval/runs/<exp>/metrics.json"
+  do_not_write_until_after_runs: true

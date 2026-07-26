@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">BenchFlow Agent Skill Lift architecture</title>
+  <desc id="desc">Governance feeds pre-registration and configs; skills mount into paired BenchFlow runs; trials feed lift metrics; packaging zips skills for submission.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f1419"/>
+      <stop offset="100%" stop-color="#1c2430"/>
+    </linearGradient>
+    <style>
+      .label { font-family: "IBM Plex Sans", "Segoe UI", sans-serif; fill: #e8eef4; }
+      .muted { fill: #9aa8b5; }
+      .box { fill: #243040; stroke: #3d4f63; stroke-width: 1.5; }
+      .accent { fill: #f0b429; }
+      .accentStroke { stroke: #f0b429; }
+      .title { font-size: 22px; font-weight: 700; }
+      .h { font-size: 13px; font-weight: 600; }
+      .s { font-size: 11px; }
+    </style>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/>
+  <text x="40" y="44" class="label title">Skill Lift  measurement architecture</text>
+  <text x="40" y="68" class="label s muted">Track 1 static skills · paired with/without · safety-aware evidence</text>
+
+  <!-- Governance -->
+  <rect x="40" y="100" width="200" height="160" rx="8" class="box"/>
+  <text x="56" y="128" class="label h">Governance</text>
+  <text x="56" y="156" class="label s">AGENTS.md</text>
+  <text x="56" y="176" class="label s">RESEARCH_PLAN.md</text>
+  <text x="56" y="196" class="label s">EXPERIMENT_PROTOCOL.md</text>
+  <text x="56" y="228" class="label s muted">hypotheses · gates · freeze</text>
+
+  <!-- Skills -->
+  <rect x="280" y="100" width="200" height="160" rx="8" class="box"/>
+  <rect x="280" y="100" width="200" height="8" rx="4" class="accent"/>
+  <text x="296" y="136" class="label h">skills/</text>
+  <text x="296" y="164" class="label s">safe-task-execution</text>
+  <text x="296" y="184" class="label s muted">library hash pinned</text>
+  <text x="296" y="216" class="label s">package_submission.py</text>
+  <text x="296" y="236" class="label s muted">’ skills.zip</text>
+
+  <!-- Runtime -->
+  <rect x="520" y="100" width="400" height="160" rx="8" class="box"/>
+  <text x="536" y="128" class="label h">Locked runtime</text>
+  <text x="536" y="156" class="label s">SkillsBench @ 9a1f4dd&</text>
+  <text x="536" y="176" class="label s">BenchFlow 0.6.3 · Python 3.12</text>
+  <text x="536" y="196" class="label s">claude-agent-acp · claude-sonnet-4-6</text>
+  <text x="536" y="228" class="label s muted">uv sync --locked · Docker sandbox</text>
+
+  <!-- Paired eval -->
+  <rect x="40" y="300" width="560" height="180" rx="8" class="box"/>
+  <text x="56" y="328" class="label h">Paired evaluation</text>
+  <rect x="56" y="348" width="240" height="100" rx="6" fill="#1a222c" stroke="#3d4f63"/>
+  <text x="72" y="376" class="label s">Control · no-skill</text>
+  <text x="72" y="396" class="label s muted">baseline capability</text>
+  <text x="72" y="424" class="label s muted">reward / trajectory</text>
+  <rect x="320" y="348" width="240" height="100" rx="6" fill="#1a222c" stroke="#f0b429"/>
+  <text x="336" y="376" class="label s">Treatment · with-skill</text>
+  <text x="336" y="396" class="label s muted">mounts repo skills/</text>
+  <text x="336" y="424" class="label s muted">reward / trajectory</text>
+
+  <!-- Metrics -->
+  <rect x="640" y="300" width="280" height="180" rx="8" class="box"/>
+  <text x="656" y="328" class="label h">Evidence</text>
+  <text x="656" y="360" class="label s">trials.json</text>
+  <text x="656" y="380" class="label s">compute_lift.py</text>
+  <text x="656" y="400" class="label s">paired ” reward</text>
+  <text x="656" y="420" class="label s">safety proxies</text>
+  <text x="656" y="452" class="label s accent">smoke PASS · EXP pending</text>
+
+  <!-- arrows -->
+  <path d="M240 180 H280" stroke="#9aa8b5" stroke-width="2" fill="none"/>
+  <path d="M480 180 H520" stroke="#9aa8b5" stroke-width="2" fill="none"/>
+  <path d="M380 260 V300" stroke="#9aa8b5" stroke-width="2" fill="none"/>
+  <path d="M720 260 V300" stroke="#9aa8b5" stroke-width="2" fill="none"/>
+  <path d="M600 390 H640" class="accentStroke" stroke-width="2.5" fill="none"/>
+</svg>
