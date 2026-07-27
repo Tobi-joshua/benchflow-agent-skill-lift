@@ -26,6 +26,18 @@ This project ships a deliberately small Track‑1 library centered on one candid
 4. **Safety-aware interpretation:** capability lift alone is insufficient; over-refusal and unsafe shortcuts are first-class failure modes.
 5. **Negative control (EXP-002):** tasks that should not trigger the skill — expect near-zero trigger rate and near-zero lift.
 
+## Visuals for the writeup
+
+Use these PNGs (GitHub/Kaggle-safe):
+
+- Card: `docs/assets/kaggle-card-560x280.png` (exactly 560×280)
+- Methodology: `docs/assets/skill-lift-methodology.png`
+- Architecture: `docs/assets/architecture.png`
+- Control vs treatment: `docs/assets/control-vs-treatment.png`
+- Experiment flow: `docs/assets/experiment-flow.png`
+
+Demo pack: `docs/video/` (`DEMO_SCRIPT.md`, `SHOT_LIST.md`, title/end cards).
+
 ## What we have measured so far
 
 **Unscored smoke (PASS):** one `citation-check` control/treatment pair on the locked runtime.
@@ -37,7 +49,9 @@ This project ships a deliberately small Track‑1 library centered on one candid
 
 This validates Docker sandboxing, agent auth, verifier extraction, and trial JSON conversion. **It is not a scored lift result** and must not be read as proof of general improvement.
 
-**Scored EXP-001 / EXP-002:** pre-registered and frozen; not executed yet.
+**Scored EXP-001:** running locally (78 paired trials). Do not publish interim lift claims until the matrix completes and metrics are reviewed.
+
+**Scored EXP-002:** pre-registered; not started.
 
 ## Design principles
 
@@ -52,14 +66,16 @@ This validates Docker sandboxing, agent auth, verifier extraction, and trial JSO
 - Public SkillsBench ≠ private Skill Lift mix.
 - EXP-001 safety metrics on public tasks are **trajectory-coded proxies**, not full ClawsBench safety rewards (ClawsBench task materials are still forthcoming publicly).
 - Single-task smoke cannot establish mean lift, variance, or trigger precision.
+- Partial EXP-001 progress is not a final result.
 
 ## Reproducibility
 
-- Branch: `cursor/safe-task-execution-skill-a21e`
+- Branch: `main`
 - Library hash: `72685e220e282607ebad10ba1ff0c6aab591d34cd73a461e752f11aeb6696521`
 - SkillsBench: `9a1f4dd5f7659f75707435da3ce854b6e48321d1`
 - Runtime: `uv sync --locked` then `uv run bench …` (do not refresh BenchFlow in the lockfile)
+- Scored runner: `python3 scripts/run_exp001.py --docker-via sg`
 
 ## Next measurement step
 
-Run **EXP-001** first (cross-domain paired evaluation), inspect cost/logs/outputs, then decide whether to launch EXP-002.
+Finish **EXP-001**, review `eval/runs/exp-001/metrics.json`, then decide whether to launch EXP-002.

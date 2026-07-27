@@ -65,15 +65,21 @@ Aligned with [`AGENTS.md`](./AGENTS.md):
 | [`eval/configs/`](./eval/configs/) | Frozen execution pins for EXP-001/002 |
 | [`eval/experiments/`](./eval/experiments/) | Pre-registration records |
 | [`eval/runs/smoke/`](./eval/runs/smoke/) | Unscored pipeline smoke (isolated from scored EXP) |
+| [`eval/runs/exp-001/`](./eval/runs/exp-001/) | Scored EXP-001 outputs + runbook |
+| [`docs/video/`](./docs/video/) | Demo script, shot list, title/end cards |
 | `tests/` | Tooling unit tests and fixtures |
 
-Architecture overview:
+### Visual assets (PNG)
 
-![Repository architecture](./docs/assets/architecture.svg)
+![Kaggle project card 560×280](./docs/assets/kaggle-card-560x280.png)
 
-Kaggle card (560×280):
+![Methodology](./docs/assets/skill-lift-methodology.png)
 
-![Kaggle project card](./docs/assets/kaggle-card-560x280.png)
+![Architecture](./docs/assets/architecture.png)
+
+![Control vs treatment](./docs/assets/control-vs-treatment.png)
+
+![Experiment flow](./docs/assets/experiment-flow.png)
 
 The competition artifact is the contents of `skills/`, packaged via `scripts/package_submission.py`.
 
@@ -98,8 +104,8 @@ The competition artifact is the contents of `skills/`, packaged via `scripts/pac
 | **2 — Core library** | First candidate: `safe-task-execution` (in progress on feature branch) |
 | **3 — Transfer packs** | Deferred until EXP-001/002 decide keep/revise |
 | **4 — Measured domain thins** | Domain skills only where ablations show stable lift |
-| **5 — Public evaluation** | Smoke PASS; scored EXP-001/002 queued |
-| **6 — Submission** | Card, architecture, storyboard, description drafted; zip after evidence |
+| **5 — Public evaluation** | Smoke PASS; scored EXP-001 running |
+| **6 — Submission** | PNG assets + Kaggle/video drafts ready; zip after evidence |
 | **7 — Post-contest** | Publish ablations and reusable methodology |
 
 Phases may overlap; promotion always requires evidence.
@@ -120,7 +126,7 @@ Detailed operating rules for agents and contributors: [`AGENTS.md`](./AGENTS.md)
 
 ## Repository Status
 
-**Candidate branch:** `cursor/safe-task-execution-skill-a21e` (not merged to `main` until EXP keep/revise/reject).
+**Default branch:** `main` (candidate skill + freeze configs merged; scored decisions still pending evidence).
 
 | Milestone | Status |
 |-----------|--------|
@@ -129,7 +135,8 @@ Detailed operating rules for agents and contributors: [`AGENTS.md`](./AGENTS.md)
 | EXP-001 / EXP-002 pre-registration + freeze configs | Done |
 | Runtime audit (BenchFlow 0.6.3 lock) | Done |
 | Unscored smoke (`citation-check` control+treatment) | **PASS** |
-| Scored EXP-001 / EXP-002 | **Not started** (intentional pause) |
+| Scored EXP-001 | **In progress** (local runner; 78 runs) |
+| Scored EXP-002 | Not started |
 
 Locked library hash:
 
@@ -137,7 +144,7 @@ Locked library hash:
 
 Smoke proves the Docker → agent → verifier → trials path. It is **not** a scored lift claim. See [`eval/runs/smoke/SMOKE_REPORT.md`](./eval/runs/smoke/SMOKE_REPORT.md).
 
-Submission prep (pre-score): [`docs/submission/KAGGLE_DESCRIPTION.md`](./docs/submission/KAGGLE_DESCRIPTION.md), [`docs/DEMO_STORYBOARD.md`](./docs/DEMO_STORYBOARD.md), [`docs/submission/SKILL_DOC_REVIEW.md`](./docs/submission/SKILL_DOC_REVIEW.md).
+Submission materials: [`docs/submission/KAGGLE_DESCRIPTION.md`](./docs/submission/KAGGLE_DESCRIPTION.md) · [`docs/DEMO_STORYBOARD.md`](./docs/DEMO_STORYBOARD.md) · [`docs/video/`](./docs/video/) · [`docs/submission/SKILL_DOC_REVIEW.md`](./docs/submission/SKILL_DOC_REVIEW.md) · [`docs/submission/CLEANUP_PLAN.md`](./docs/submission/CLEANUP_PLAN.md)
 
 ### Tooling quick start
 
