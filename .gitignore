@@ -223,3 +223,7 @@ __marimo__/
 .streamlit/secrets.toml
 skillsbench/
 scripts/lib/__pycache__/
+
+# Local demo recordings (keep cards/scripts; ignore bulky drafts)
+docs/video/*.mp4
+docs/video/*.mov
