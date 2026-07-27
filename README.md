@@ -135,7 +135,7 @@ Detailed operating rules for agents and contributors: [`AGENTS.md`](./AGENTS.md)
 | EXP-001 / EXP-002 pre-registration + freeze configs | Done |
 | Runtime audit (BenchFlow 0.6.3 lock) | Done |
 | Unscored smoke (`citation-check` control+treatment) | **PASS** |
-| Scored EXP-001 | **In progress** (local runner; 78 runs) |
+| Scored EXP-001 | **Partial** (credit limit stopped full 78-run matrix; pipeline validated) |
 | Scored EXP-002 | Not started |
 
 Locked library hash:
