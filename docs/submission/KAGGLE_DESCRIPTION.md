@@ -49,7 +49,7 @@ Demo pack: `docs/video/` (`DEMO_SCRIPT.md`, `SHOT_LIST.md`, title/end cards).
 
 This validates Docker sandboxing, agent auth, verifier extraction, and trial JSON conversion. **It is not a scored lift result** and must not be read as proof of general improvement.
 
-**Scored EXP-001:** running locally (78 paired trials). Do not publish interim lift claims until the matrix completes and metrics are reviewed.
+**Scored EXP-001:** partial local execution produced multiple healthy control/treatment trials before stopping on provider credit limits. Full 78-run matrix is **incomplete**. Do **not** publish a final lift percentage from partial data.
 
 **Scored EXP-002:** pre-registered; not started.
 
