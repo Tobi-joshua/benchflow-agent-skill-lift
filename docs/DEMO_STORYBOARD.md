@@ -1,11 +1,13 @@
 # Demo Storyboard (index)
 
-Canonical recording materials now live under [`docs/video/`](./video/):
+Canonical recording materials live under [`docs/video/`](./video/):
 
-- [`video/DEMO_SCRIPT.md`](./video/DEMO_SCRIPT.md) — full narration
-- [`video/SHOT_LIST.md`](./video/SHOT_LIST.md) — timed shots + OBS plan
-- [`video/TITLE_CARD.png`](./video/TITLE_CARD.png) — 1920×1080
-- [`video/END_CARD.png`](./video/END_CARD.png) — 1920×1080
+- [`video/DEMO_NARRATION.md`](./video/DEMO_NARRATION.md) — final spoken script (no false lift claims)
+- [`video/SCREEN_RECORDING_GUIDE.md`](./video/SCREEN_RECORDING_GUIDE.md) — OBS how-to
+- [`video/SLIDE_CONTENT.md`](./video/SLIDE_CONTENT.md) — on-screen text
+- [`video/DEMO_SCRIPT.md`](./video/DEMO_SCRIPT.md) — earlier draft (superseded by DEMO_NARRATION for claims)
+- [`video/SHOT_LIST.md`](./video/SHOT_LIST.md) — timed shots
+- [`video/TITLE_CARD.png`](./video/TITLE_CARD.png) / [`video/END_CARD.png`](./video/END_CARD.png) — 1920×1080
 
 ## Asset map (PNG only)
 
@@ -22,5 +24,7 @@ Canonical recording materials now live under [`docs/video/`](./video/):
 ## Claims discipline
 
 - Smoke = pipeline proof only.
-- Do not present EXP-001 partial runs as final lift.
+- Partial EXP-001 ≠ final lift result (credit stop is OK to disclose).
 - Do not show secrets or `.env` files on camera.
+- Preferred line: *“We built and validated an evaluation pipeline using BenchFlow. Initial smoke and partial execution confirm the system works; full benchmark evaluation is ongoing.”*
+
