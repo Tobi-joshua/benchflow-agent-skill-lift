@@ -2,7 +2,17 @@
 
 How this research repo turns a small static skill library into paired lift evidence for BenchFlow Agent Skill Lift (Track 1).
 
-## System view
+## Visual diagrams (PNG — preferred for GitHub/Kaggle)
+
+![Architecture](./assets/architecture.png)
+
+![Control vs treatment](./assets/control-vs-treatment.png)
+
+![Experiment flow](./assets/experiment-flow.png)
+
+![Methodology](./assets/skill-lift-methodology.png)
+
+## System view (text)
 
 ```mermaid
 flowchart LR
@@ -36,23 +46,6 @@ flowchart LR
   end
 ```
 
-## Control vs treatment
-
-```mermaid
-flowchart TB
-  TASK["SkillsBench task.md<br/>pinned commit 9a1f4dd…"]
-  CTRL["Control<br/>--skill-mode no-skill"]
-  TREAT["Treatment<br/>--skill-mode with-skill<br/>--skills-dir repo/skills"]
-  DOCKER["Docker sandbox"]
-  AGENT["claude-agent-acp<br/>claude-sonnet-4-6"]
-  VER["Task verifier"]
-  OUT["result.json → trials.json"]
-
-  TASK --> CTRL --> DOCKER --> AGENT --> VER --> OUT
-  TASK --> TREAT --> DOCKER
-  TREAT -. mounts .-> SKILL["safe-task-execution/SKILL.md"]
-```
-
 ## Directory roles
 
 | Path | Role |
@@ -81,7 +74,5 @@ flowchart TB
 | Experiment | Purpose | Status |
 |---|---|---|
 | Smoke | Pipeline + mount + verifier + trials schema | **PASS** (unscored) |
-| EXP-001 | Cross-domain lift + safety proxies | Pre-registered; **not started** |
-| EXP-002 | Negative-control trigger validation | Pre-registered; **not started** |
-
-Scored runs remain intentionally paused until you explicitly start them.
+| EXP-001 | Cross-domain lift + safety proxies | **Running** (local scored matrix) |
+| EXP-002 | Negative-control trigger validation | Pre-registered; not started |
